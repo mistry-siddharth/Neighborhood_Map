@@ -91,8 +91,8 @@ function ViewModel(){
                 //Google Street view implementation
                 var pano = null;
                 google.maps.event.addListener(infowindow, 'domready', function() {
-                    if (pano != null) {
-                        pano.unbind("position");    //not sure how to get position of each marker here
+                    if (pano !== null) {
+                        pano.unbind("position");
                         pano.setVisible(false);
                     }
                     pano = new google.maps.StreetViewPanorama(document.getElementById("content"), {
@@ -102,11 +102,11 @@ function ViewModel(){
                         addressControl: false,
                         linksControl: false
                     });
-                    pano.bindTo("position", marker);    //not sure how to get position of each marker here
+                    pano.bindTo("position", marker);
                     pano.setVisible(true);
                 });
                 google.maps.event.addListener(infowindow, 'closeclick', function() {
-                    pano.unbind("position");    //not sure how to get position of each marker here
+                    pano.unbind("position");
                     pano.setVisible(false);
                     pano = null;
                 });
@@ -126,6 +126,11 @@ function ViewModel(){
         setTimeout((function() {
             this.setAnimation(null);
         }).bind(this), 1400);
+    };
+
+    //toggle to default icon when cursor is moved out from the marker
+    var setDefaultIcon = function() {
+        this.setIcon(defaultIcon);
     };
 
     //looping through the richmondLocations array in data.js, where all the information related to the locations is stored
@@ -152,9 +157,7 @@ function ViewModel(){
         this.marker.setMap(map);
         this.markerList.push(this.marker);
         this.marker.addListener('click', self.makeMarkerBounce);
-        this.marker.addListener('mouseout', function() {
-            this.setIcon(defaultIcon);
-        });
+        this.marker.addListener('mouseout', setDefaultIcon);
     }
 
     //store the locations in an array named myLocations, so that it can be displayed in the search bar
